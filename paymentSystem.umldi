@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagrams:Diagrams xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.topcased.org/DI/1.0" xmlns:diagrams="http://www.topcased.org/Diagrams/1.0" xmi:id="_X1PC0JkUEeeQW8EuVuq7Ag" activeDiagram="_ao1L0JkUEeeQW8EuVuq7Ag">
+  <model href="paymentSystem.uml#_qb8akM37EdqwVrslYOdUDA"/>
+  <subdiagrams xmi:id="_aoyIgJkUEeeQW8EuVuq7Ag">
+    <model href="paymentSystem.uml#_aotQAZkUEeeQW8EuVuq7Ag"/>
+    <diagrams xmi:id="_ao1L0JkUEeeQW8EuVuq7Ag" position="0,0" size="100,100" name="支付系统时序图" viewport="0,0">
+      <property xmi:id="_ao5dQJkUEeeQW8EuVuq7Ag" key="pageFormatName" value=""/>
+      <property xmi:id="_ao5dQZkUEeeQW8EuVuq7Ag" key="diagramWidth" value="840"/>
+      <property xmi:id="_ao5dQpkUEeeQW8EuVuq7Ag" key="diagramHeight" value="607"/>
+      <property xmi:id="_ao5dQ5kUEeeQW8EuVuq7Ag" key="pageMarginName" value="A4"/>
+      <property xmi:id="_ao5dRJkUEeeQW8EuVuq7Ag" key="diagramTopMargin" value="20"/>
+      <property xmi:id="_ao5dRZkUEeeQW8EuVuq7Ag" key="diagramBottomMargin" value="20"/>
+      <property xmi:id="_ao5dRpkUEeeQW8EuVuq7Ag" key="diagramLeftMargin" value="20"/>
+      <property xmi:id="_ao5dR5kUEeeQW8EuVuq7Ag" key="diagramRightMargin" value="20"/>
+      <property xmi:id="_ao5dSJkUEeeQW8EuVuq7Ag" key="orientation" value="portrait"/>
+      <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_ao1L0ZkUEeeQW8EuVuq7Ag" presentation="org.topcased.modeler.uml.sequencediagram">
+        <element href="paymentSystem.uml#_aotQAZkUEeeQW8EuVuq7Ag"/>
+      </semanticModel>
+      <contained xsi:type="di:GraphNode" xmi:id="_9y8wMJkUEeeQW8EuVuq7Ag" position="9,40" size="147,482">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_9y8wMZkUEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_9y9-UJkUEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_jmYqwJkWEeeQW8EuVuq7Ag" position="63,6" size="20,334">
+          <anchorage xmi:id="_W7R_MJkYEeeQW8EuVuq7Ag" position="18,27" graphEdge="_W7T0YJkYEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_yz-Y0JkiEeeQW8EuVuq7Ag" position="17,222" graphEdge="_yz-Y0ZkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_-inxQJkiEeeQW8EuVuq7Ag" position="19,262" graphEdge="_-io_YJkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_Iein0JkjEeeQW8EuVuq7Ag" position="8,289" graphEdge="_IejO4JkjEeeQW8EuVuq7Ag"/>
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_jmYqwZkWEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_jmZ44JkWEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_pSixwJkVEeeQW8EuVuq7Ag" position="183,40" size="129,485">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_pSixwZkVEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_pSj_4JkVEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_cjyxwJkWEeeQW8EuVuq7Ag" position="54,26" size="20,206">
+          <anchorage xmi:id="_UQ4OcJkYEeeQW8EuVuq7Ag" position="15,60" graphEdge="_UQ5ckJkYEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_W7TNUJkYEeeQW8EuVuq7Ag" position="2,8" graphEdge="_W7T0YJkYEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_dnY_8JkaEeeQW8EuVuq7Ag" position="17,5" graphEdge="_dnaOEJkaEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_dnZnAJkaEeeQW8EuVuq7Ag" position="9,32" graphEdge="_dnaOEJkaEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_mbR90JkiEeeQW8EuVuq7Ag" position="5,171" graphEdge="_mbSk4JkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_yz9xwJkiEeeQW8EuVuq7Ag" position="0,202" graphEdge="_yz-Y0ZkiEeeQW8EuVuq7Ag"/>
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_cjyxwZkWEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_cjz_4JkWEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphEdge" xmi:id="_dnaOEJkaEeeQW8EuVuq7Ag" anchor="_dnY_8JkaEeeQW8EuVuq7Ag _dnZnAJkaEeeQW8EuVuq7Ag">
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_dnaOEZkaEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_dncqUJkaEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+          <contained xsi:type="di:EdgeObjectOffset" xmi:id="_dnaOEpkaEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="90,2"/>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_Enj5wJkkEeeQW8EuVuq7Ag" position="54,378" size="20,50">
+          <anchorage xmi:id="_81AUsJkpEeeQW8EuVuq7Ag" position="12,41" graphEdge="_81AUsZkpEeeQW8EuVuq7Ag"/>
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_Enj5wZkkEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_Enlu8JkkEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_uqnCoJkVEeeQW8EuVuq7Ag" position="315,40" size="187,486">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_uqnCoZkVEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_uqnpsJkVEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_UQ2ZQJkYEeeQW8EuVuq7Ag" position="59,84" size="20,117">
+          <anchorage xmi:id="_UQ41gJkYEeeQW8EuVuq7Ag" position="2,2" graphEdge="_UQ5ckJkYEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_NbyaYJkiEeeQW8EuVuq7Ag" position="8,74" graphEdge="_NbyaYZkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_mbQvsJkiEeeQW8EuVuq7Ag" position="2,113" graphEdge="_mbSk4JkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_RsjAwJkpEeeQW8EuVuq7Ag" position="18,13" graphEdge="_Rsk18JkpEeeQW8EuVuq7Ag"/>
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_UQ2ZQZkYEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_UQ3AUJkYEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+        </contained>
+        <contained xsi:type="di:GraphNode" xmi:id="_PK2HwJkjEeeQW8EuVuq7Ag" position="59,332" size="20,125">
+          <anchorage xmi:id="_YsnY8JkjEeeQW8EuVuq7Ag" position="13,23" graphEdge="_YsnY8ZkjEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_zniHQJkjEeeQW8EuVuq7Ag" position="12,37" graphEdge="_znjVYJkjEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_zniuUJkjEeeQW8EuVuq7Ag" position="7,67" graphEdge="_znjVYJkjEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_80_toJkpEeeQW8EuVuq7Ag" position="0,87" graphEdge="_81AUsZkpEeeQW8EuVuq7Ag"/>
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_PK2HwZkjEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_PK2u0JkjEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphNode" xmi:id="_C-OFwJkWEeeQW8EuVuq7Ag" position="513,40" size="278,486">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_C-OFwZkWEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_C-PT4JkWEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:GraphNode" xmi:id="_-zMZUJkhEeeQW8EuVuq7Ag" position="129,88" size="20,290">
+          <anchorage xmi:id="_NbxMQJkiEeeQW8EuVuq7Ag" position="0,70" graphEdge="_NbyaYZkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_-ioYUJkiEeeQW8EuVuq7Ag" position="11,180" graphEdge="_-io_YJkiEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_IeiAwJkjEeeQW8EuVuq7Ag" position="1,207" graphEdge="_IejO4JkjEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_YsmK0JkjEeeQW8EuVuq7Ag" position="2,267" graphEdge="_YsnY8ZkjEeeQW8EuVuq7Ag"/>
+          <anchorage xmi:id="_RskO4JkpEeeQW8EuVuq7Ag" position="6,9" graphEdge="_Rsk18JkpEeeQW8EuVuq7Ag"/>
+          <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_-zMZUZkhEeeQW8EuVuq7Ag" presentation="default">
+            <element href="paymentSystem.uml#_-zOOgJkhEeeQW8EuVuq7Ag"/>
+          </semanticModel>
+        </contained>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_UQ5ckJkYEeeQW8EuVuq7Ag" anchor="_UQ4OcJkYEeeQW8EuVuq7Ag _UQ41gJkYEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_UQ5ckZkYEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_UQ7RwJkYEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_UQ5ckpkYEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="-15,14"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_W7T0YJkYEeeQW8EuVuq7Ag" anchor="_W7R_MJkYEeeQW8EuVuq7Ag _W7TNUJkYEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_W7T0YZkYEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_W7VCgpkYEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_W7T0YpkYEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="-1,-11"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_NbyaYZkiEeeQW8EuVuq7Ag" anchor="_NbxMQJkiEeeQW8EuVuq7Ag _NbyaYJkiEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_NbyaYpkiEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_Nb0PkZkiEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_NbyaY5kiEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="22,20"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_mbSk4JkiEeeQW8EuVuq7Ag" anchor="_mbQvsJkiEeeQW8EuVuq7Ag _mbR90JkiEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_mbSk4ZkiEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_mbTzAZkiEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_mbSk4pkiEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="8,20"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_yz-Y0ZkiEeeQW8EuVuq7Ag" anchor="_yz9xwJkiEeeQW8EuVuq7Ag _yz-Y0JkiEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_yz-_4JkiEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_y0BcIJkiEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_yz-_4ZkiEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="-1,14"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_-io_YJkiEeeQW8EuVuq7Ag" anchor="_-inxQJkiEeeQW8EuVuq7Ag _-ioYUJkiEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_-io_YZkiEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_-iq0kJkiEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_-io_YpkiEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="-3,13"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_IejO4JkjEeeQW8EuVuq7Ag" anchor="_IeiAwJkjEeeQW8EuVuq7Ag _Iein0JkjEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_IejO4ZkjEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_IelEEZkjEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_IejO4pkjEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="-2,14"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_YsnY8ZkjEeeQW8EuVuq7Ag" anchor="_YsmK0JkjEeeQW8EuVuq7Ag _YsnY8JkjEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_YsnY8pkjEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_Ysp1MJkjEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_YsnY85kjEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="0,-10"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_znjVYJkjEeeQW8EuVuq7Ag" anchor="_zniHQJkjEeeQW8EuVuq7Ag _zniuUJkjEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_znjVYZkjEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_znlxoJkjEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_znjVYpkjEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="126,37"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_Rsk18JkpEeeQW8EuVuq7Ag" anchor="_RsjAwJkpEeeQW8EuVuq7Ag _RskO4JkpEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_Rsk18ZkpEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_RspHYJkpEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_Rsk18pkpEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="-2,-15"/>
+      </contained>
+      <contained xsi:type="di:GraphEdge" xmi:id="_81AUsZkpEeeQW8EuVuq7Ag" anchor="_80_toJkpEeeQW8EuVuq7Ag _81AUsJkpEeeQW8EuVuq7Ag">
+        <semanticModel xsi:type="di:EMFSemanticModelBridge" xmi:id="_81AUspkpEeeQW8EuVuq7Ag" presentation="default">
+          <element href="paymentSystem.uml#_81Bi0ZkpEeeQW8EuVuq7Ag"/>
+        </semanticModel>
+        <contained xsi:type="di:EdgeObjectOffset" xmi:id="_81AUs5kpEeeQW8EuVuq7Ag" id="nameEdgeObject" offset="0,-10"/>
+      </contained>
+    </diagrams>
+  </subdiagrams>
+  <subdiagrams xmi:id="_7cDKQJkUEeeQW8EuVuq7Ag"/>
+</diagrams:Diagrams>
