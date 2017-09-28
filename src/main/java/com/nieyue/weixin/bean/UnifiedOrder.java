@@ -1,7 +1,7 @@
 package com.nieyue.weixin.bean;
 
 /**
- * 微信统一下单类
+ * 微信公众号统一下单类
  * 
  * @author yy
  * 

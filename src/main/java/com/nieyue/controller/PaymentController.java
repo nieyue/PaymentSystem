@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,15 @@ import com.nieyue.alipay.AlipayUtil;
 import com.nieyue.bean.Payment;
 import com.nieyue.rabbitmq.confirmcallback.Sender;
 import com.nieyue.service.PaymentService;
+import com.nieyue.util.MyDom4jUtil;
 import com.nieyue.util.ResultUtil;
 import com.nieyue.util.StateResult;
 import com.nieyue.util.StateResultList;
+import com.nieyue.weixin.UnifiedOrderUtil;
+import com.nieyue.weixin.business.Order;
+import com.nieyue.weixin.business.WeiXinBusiness;
+
+import net.sf.json.JSONObject;
 
 
 /**
@@ -42,6 +49,10 @@ public class PaymentController {
 	private Sender sender;
 	@Resource
 	private AlipayUtil alipayUtil;
+	@Resource
+	private WeiXinBusiness weiXinBusiness;
+	@Resource
+	private UnifiedOrderUtil unifiedOrderUtil;
 	
 	
 	/**
@@ -80,7 +91,7 @@ public class PaymentController {
 		return ResultUtil.getSR(um);
 	}
 	/**
-	 * 阿里云支付
+	 * 阿里云APP支付
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 * http://192.168.7.111:8888/payment/alipay?orderNumber=6&money=0.01&subject=aliyun&body=aliyun&notifyUrl=http://www.baidu.com&businessNotifyUrl=http://www.baidu.com
@@ -97,6 +108,32 @@ public class PaymentController {
 			return ResultUtil.getSlefSRSuccessList(ls);
 		}
 		return ResultUtil.getSlefSRFailList(ls);*/
+	}
+	/**
+	 * 微信APP支付 
+	 * @param signature
+	 * @param timestamp
+	 * @param nonce
+	 * @param echostr
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/wechatpay",method={RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String WeiXinAppUnifiedOrder(
+			@ModelAttribute Payment payment,
+			HttpServletRequest request) throws Exception {
+		
+		Order o=new Order();
+		o.setOrderId(234);
+		String openid =null;//
+		String result = weiXinBusiness.WXUnifiedorder(o,"测试", unifiedOrderUtil.getIpAddr(request), openid,"APP","http://nieyue.tea18.cn/weixin/notifyUrl");
+		Map<String, Object> m = MyDom4jUtil.xmlStrToMap(result);
+		String prepay_id = (String) m.get("prepay_id");
+		Map<String,String> map=unifiedOrderUtil.getAPPPaySignMap(prepay_id);
+		String sign = unifiedOrderUtil.getAPPPaySign(map);
+		map.put("sign", sign);
+		JSONObject json = JSONObject.fromObject(map);
+		return json.toString();
 	}
 /*	*//**
 	 * 阿里云支付

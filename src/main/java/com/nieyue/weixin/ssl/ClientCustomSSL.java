@@ -37,33 +37,38 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 import com.nieyue.util.MyFile;
-import com.nieyue.util.ThirdParty;
 
 /**
  * 微信退款证书
  */
+@Configuration
 public class ClientCustomSSL {
+		 //商户ID
+		@Value("${myPugin.weixin.weChatPayment.MCH_ID}") 
+		 public  String mch_id;
 	/**
 	 * 设置证书
 	 * @return
 	 * @throws Exception
 	 */
-	public static CloseableHttpClient getCloseableHttpClient() throws Exception{
+	public  CloseableHttpClient getCloseableHttpClient() throws Exception{
         KeyStore keyStore  = KeyStore.getInstance("PKCS12");
         FileInputStream instream = new FileInputStream(new File(ClientCustomSSL.class.getResource("").getPath()+"apiclient_cert.p12"));
        //只能本地访问
         //FileInputStream instream = new FileInputStream("src/com/nieyue/weixin/ssl/apiclient_cert.p12");
         try {
-            keyStore.load(instream, ThirdParty.GetValueByKey(ThirdParty.WEIXIN_YAYAO_MCH_ID).toCharArray());
+            keyStore.load(instream,mch_id.toCharArray());
         } finally {
             instream.close();
         }
         // Trust own CA and all self-signed certs
         @SuppressWarnings("deprecation")
 		SSLContext sslcontext = SSLContexts.custom()
-                .loadKeyMaterial(keyStore, ThirdParty.GetValueByKey(ThirdParty.WEIXIN_YAYAO_MCH_ID).toCharArray())
+                .loadKeyMaterial(keyStore, mch_id.toCharArray())
                 .build();
         // Allow TLSv1 protocol only
         @SuppressWarnings("deprecation")
@@ -88,6 +93,6 @@ public class ClientCustomSSL {
     	//System.out.println(file.getAbsolutePath());
     	//System.out.println(file.getCanonicalPath());
     	//System.out.println(file.getPath());
-    	System.out.println(getCloseableHttpClient());
+    	System.out.println(new ClientCustomSSL().getCloseableHttpClient());
     }
 }

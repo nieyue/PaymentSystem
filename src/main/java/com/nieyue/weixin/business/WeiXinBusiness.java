@@ -2,29 +2,40 @@ package com.nieyue.weixin.business;
 
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.nieyue.util.HttpClientUtil;
 import com.nieyue.util.MyConvertXML;
 import com.nieyue.util.MyDom4jUtil;
 import com.nieyue.weixin.CheckUtil;
 import com.nieyue.weixin.PastUtil;
 import com.nieyue.weixin.UnifiedOrderUtil;
+import com.nieyue.weixin.WeiXinHttpClientUtil;
 import com.nieyue.weixin.WeiXinJSToken;
 import com.nieyue.weixin.bean.UnifiedOrder;
 
 import net.sf.json.JSONObject;
 
 /**
- * h5支付
+ * 微信支付
  * @author yy
  *
  */
+@Component
 public class WeiXinBusiness {
+	
+	@Resource
+	UnifiedOrderUtil unifiedOrderUtil;
+	@Resource
+	WeiXinHttpClientUtil weiXinHttpClientUtil;
 	/**
 	 * 微信jssdk接口入口,返回配置数据
 	 * @param url 访问路径
 	 * @return 配置数据
 	 */
-	public static String WXJSSDK(String appid ,String secret,String url){
+	public  String WXJSSDK(String appid ,String secret,String url){
 		String json = PastUtil.getParam(appid,secret,url);
 		return json;
 	}
@@ -36,7 +47,7 @@ public class WeiXinBusiness {
 	 * @param echostr 随机字符串
 	 * @return echostr
 	 */
-	public static String WXServer(String signature,String timestamp,String nonce,String echostr){
+	public  String WXServer(String signature,String timestamp,String nonce,String echostr){
 		if(CheckUtil.checkSignature(signature, timestamp, nonce)){
 			return echostr;
 		}	
@@ -46,7 +57,7 @@ public class WeiXinBusiness {
 	 * 微信授权访问
 	 * @return redirect_url
 	 */
-	public static String WXAuth(String appid,String redirect_url,String snsapi_base,String state){
+	public  String WXAuth(String appid,String redirect_url,String snsapi_base,String state){
 		String aurl="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appid+"&redirect_uri="+redirect_url+"&response_type=code&scope="+snsapi_base+"&state="+state+"#wechat_redirect";
 		return aurl;
 	}
@@ -55,7 +66,7 @@ public class WeiXinBusiness {
 	 * @return openid
 	 * 
 	 */
-	public static String WXOpenid(String appid,String secret,String code){
+	public  String WXOpenid(String appid,String secret,String code){
 		if(null != code && !"".equals(code)){
             //根据code换取openId
         String at = WeiXinJSToken.loadJson("https://api.weixin.qq.com/sns/oauth2/access_token?appid="+appid+"&secret="+secret+"&code="+code+"&grant_type=authorization_code");
@@ -75,9 +86,9 @@ public class WeiXinBusiness {
 	 * @return prepay_id ，code_url（trade_type为NATIVE有返回）
 	 * @throws Exception 
 	 */
-	public static String WXUnifiedorder(Order order,String body,String ip,String openid,String trade_type,String notify_url) throws Exception {
-		UnifiedOrder uo = UnifiedOrderUtil.createUnifiedOrder(order,body,ip,openid,trade_type,notify_url);//创建微信订单
-		String sign = UnifiedOrderUtil.getSign(uo);
+	public  String WXUnifiedorder(Order order,String body,String ip,String openid,String trade_type,String notify_url) throws Exception {
+		UnifiedOrder uo = unifiedOrderUtil.createUnifiedOrder(order,body,ip,openid,trade_type,notify_url);//创建微信订单
+		String sign = unifiedOrderUtil.getSign(uo);
 		uo.setSign(sign);//设置签名
 		String xxml = MyConvertXML.getUnderlineXML(uo,true);//对象转xml 驼峰转下划线
 		String result = HttpClientUtil.doPostJson("https://api.mch.weixin.qq.com/pay/unifiedorder", xxml);//获取统一下单
@@ -89,9 +100,9 @@ public class WeiXinBusiness {
 	 * 微信统一下单notify_url
 	 * @throws Exception 
 	 */
-	public static String WXNotifyUrl( String rxml) throws Exception  {
+	public  String WXNotifyUrl( String rxml) throws Exception  {
     	Map<String, Object> map = MyDom4jUtil.xmlStrToMap(rxml);
-		System.out.println(map);
+		//System.out.println(map);
 		return "SUCCESS";
 	}
 	/**
@@ -99,8 +110,8 @@ public class WeiXinBusiness {
 	 * @param out_trade_no 商户订单号
 	 * @throws Exception 
 	 */
-	public static String WXOrderQuery(String out_trade_no) throws Exception {
-        	UnifiedOrder uo = UnifiedOrderUtil.queryOrder(out_trade_no);
+	public  String WXOrderQuery(String out_trade_no) throws Exception {
+        	UnifiedOrder uo = unifiedOrderUtil.queryOrder(out_trade_no);
         	String orderxml = MyConvertXML.getUnderlineXML(uo,true);
         	String result = HttpClientUtil.doPostJson("https://api.mch.weixin.qq.com/pay/orderquery", orderxml);
         	Map<String, Object> map = MyDom4jUtil.xmlStrToMap(result);
@@ -112,8 +123,8 @@ public class WeiXinBusiness {
 	 * @param out_trade_no 商户订单号
 	 * @throws Exception 
 	 */
-	public static String WXOrderClose(String out_trade_no) throws Exception {
-        	UnifiedOrder uo = UnifiedOrderUtil.queryOrder(out_trade_no);
+	public  String WXOrderClose(String out_trade_no) throws Exception {
+        	UnifiedOrder uo = unifiedOrderUtil.queryOrder(out_trade_no);
         	String orderxml = MyConvertXML.getUnderlineXML(uo,true);
         	String result = HttpClientUtil.doPostJson("https://api.mch.weixin.qq.com/pay/closeorder", orderxml);
         	Map<String, Object> map = MyDom4jUtil.xmlStrToMap(result);
@@ -127,10 +138,10 @@ public class WeiXinBusiness {
 	 * @param refund_fee 退款金额
 	 * @throws Exception 
 	 */
-	public static String WXRefund(String out_trade_no,Integer total_fee,Integer refund_fee) throws Exception  {
-		UnifiedOrder uo = UnifiedOrderUtil.refund(out_trade_no, total_fee, refund_fee);
+	public  String WXRefund(String out_trade_no,Integer total_fee,Integer refund_fee) throws Exception  {
+		UnifiedOrder uo = unifiedOrderUtil.refund(out_trade_no, total_fee, refund_fee);
 		String orderxml = MyConvertXML.getUnderlineXML(uo,true);
-		JSONObject json = HttpClientUtil.doSSLXmlPostJson("https://api.mch.weixin.qq.com/secapi/pay/refund", orderxml);
+		JSONObject json = weiXinHttpClientUtil.doSSLXmlPostJson("https://api.mch.weixin.qq.com/secapi/pay/refund", orderxml);
 		return json.toString();
 	}
 	/**
@@ -138,8 +149,8 @@ public class WeiXinBusiness {
 	 *@param out_trade_no 商户订单号
 	 * @throws Exception 
 	 */
-	public static String WXRefundQuery(String out_trade_no) throws Exception  {
-        	UnifiedOrder uo = UnifiedOrderUtil.queryOrder(out_trade_no);
+	public  String WXRefundQuery(String out_trade_no) throws Exception  {
+        	UnifiedOrder uo = unifiedOrderUtil.queryOrder(out_trade_no);
         	String orderxml = MyConvertXML.getUnderlineXML(uo,true);
         	String result = HttpClientUtil.doPostJson("https://api.mch.weixin.qq.com/pay/closeorder", orderxml);
         	Map<String, Object> map = MyDom4jUtil.xmlStrToMap(result);

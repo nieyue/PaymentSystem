@@ -18,10 +18,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 
 import com.nieyue.util.MyDom4jUtil;
+import com.nieyue.util.ThirdParty;
 import com.nieyue.weixin.bean.UnifiedOrder;
 import com.nieyue.weixin.business.Order;
 
@@ -32,23 +31,22 @@ import net.sf.json.JSONObject;
  * @author yy
  *
  */
-@Configuration
-public class UnifiedOrderUtil {
+public class UnifiedOrderUtil2 {
 	// 第三方用户唯一凭证
-	@Value("${myPugin.weixin.weChatPayment.APPID}") 
-	public String appid ;
+	// public static String appid = ThirdParty.GetValueByKey(ThirdParty.WEIXIN_FANGSIYUE_APPID);
+	 public static String appid = ThirdParty.GetValueByKey(ThirdParty.WEIXIN_YAYAO_APPID);
 	 // 第三方用户唯一凭证密钥
-	@Value("${myPugin.weixin.weChatPayment.SECRET}") 
-	 public String appsecret ;
+	 //public static String appsecret = ThirdParty.GetValueByKey(ThirdParty.WEIXIN_FANGSIYUE_SECRET);
+	 public static String appsecret = ThirdParty.GetValueByKey(ThirdParty.WEIXIN_YAYAO_SECRET);
 	 //商户ID
-	@Value("${myPugin.weixin.weChatPayment.MCH_ID}") 
-	 public  String mch_id;
+	 //public static String mch_id=ThirdParty.GetValueByKey(ThirdParty.WEIXIN_FANGSIYUE_MCH_ID);
+	 public static String mch_id=ThirdParty.GetValueByKey(ThirdParty.WEIXIN_YAYAO_MCH_ID);
 	 //商户api秘钥key
-	@Value("${myPugin.weixin.weChatPayment.API}") 
-	 public  String key;
+	 //public static String key=ThirdParty.GetValueByKey(ThirdParty.WEIXIN_FANGSIYUE_API);
+	 public static String key=ThirdParty.GetValueByKey(ThirdParty.WEIXIN_YAYAO_API);
 	
 	 
-	 public  JSONObject httpsRequestToJsonObject(String requestUrl, String requestMethod, String outputStr) {
+	 public static JSONObject httpsRequestToJsonObject(String requestUrl, String requestMethod, String outputStr) {
 		  JSONObject jsonObject = null;
 		  try {
 		  StringBuffer buffer = httpsRequest(requestUrl, requestMethod, outputStr);
@@ -59,7 +57,7 @@ public class UnifiedOrderUtil {
 		  return jsonObject;
 		 }
 		  
-		 private  StringBuffer httpsRequest(String requestUrl, String requestMethod, String output)
+		 private static StringBuffer httpsRequest(String requestUrl, String requestMethod, String output)
 		  throws Exception {
 			// 创建SSLContext对象，并使用我们指定的信任管理器初始化
 	      //SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
@@ -94,7 +92,7 @@ public class UnifiedOrderUtil {
 		  return buffer;
 		 } 
 		 
-		 public  Map<String, Object> httpsRequestToXML(String requestUrl, String requestMethod, String outputStr) {
+		 public static Map<String, Object> httpsRequestToXML(String requestUrl, String requestMethod, String outputStr) {
 			  Map<String, Object> result = new HashMap<String,Object>();
 			  try {
 			  StringBuffer buffer = httpsRequest(requestUrl, requestMethod, outputStr);
@@ -108,7 +106,7 @@ public class UnifiedOrderUtil {
 	 * 随机字符串：我用的是UUID去中划线
 	 * @return
 	 */
-	public  String createNonceStr() {
+	public static String createNonceStr() {
 		      return UUID.randomUUID().toString().replace("-","");
 	 }
 	/**
@@ -118,7 +116,7 @@ public class UnifiedOrderUtil {
 	 * @param openId 用户的openId
 	 * @return
 	 */
-	 public  UnifiedOrder createUnifiedOrder(Order order,String body,String ip,String openid,String trade_type,String notify_url) {
+	 public static UnifiedOrder createUnifiedOrder(Order order,String body,String ip,String openid,String trade_type,String notify_url) {
 		  UnifiedOrder unifiedOrder = new UnifiedOrder();
 		  unifiedOrder.setAppid(appid);
 		  unifiedOrder.setDeviceInfo("WEB");
@@ -143,7 +141,7 @@ public class UnifiedOrderUtil {
 	  * @return
 	  * @throws Exception
 	  */
-	  public  String getSign(UnifiedOrder unifiedOrder) throws Exception {
+	  public static String getSign(UnifiedOrder unifiedOrder) throws Exception {
 		 //匹配微信内h5支付和扫码支付
 		  String oi="";
 		  if(unifiedOrder.getOpenid()!=null&&!unifiedOrder.getOpenid().equals("")){
@@ -165,45 +163,10 @@ public class UnifiedOrderUtil {
 	  MessageDigest md = MessageDigest.getInstance("MD5");
 	  md.reset();
 	  md.update(signTemp.getBytes("UTF-8"));
-	   String sign = byteToStr(md.digest()).toUpperCase();
+	   String sign = UnifiedOrderUtil2.byteToStr(md.digest()).toUpperCase();
 	 // String md = DigestUtils.md5Hex(signTemp);
 		 // String sign = md.toUpperCase();
 		  return sign;
-	  }
-	  /**
-	   * 获取APP支付签名
-	   * @param payInfo
-	   * @return
-	   * @throws Exception
-	   * 大小写敏感
-	   */
-	  public  String getAPPPaySign(Map<String,String> map) throws Exception {
-		  String signTemp = "appid="+map.get("appid")
-		  +"&noncestr="+map.get("noncestr")
-		  +"&package="+map.get("package")
-		  +"&partnerid="+map.get("partnerid")
-		  +"&prepayid="+map.get("prepayid")
-		  +"&timestamp="+map.get("timestamp")
-		  +"&key="+key; //这个key注意
-		  MessageDigest md = MessageDigest.getInstance("MD5");
-		  md.reset();
-		  md.update(signTemp.getBytes("UTF-8"));
-		  String sign = byteToStr(md.digest()).toUpperCase();
-		  return sign;
-	  }
-	  /**
-	   * 获取微信APP支付签名map
-	   * @return
-	   */
-	  public  Map<String ,String> getAPPPaySignMap(String prepay_id){
-		  Map<String,String> m2=new HashMap<String,String>();
-		  m2.put("appid", appid);
-		  m2.put("partnerid", mch_id);
-		  m2.put("prepayid",prepay_id);
-		  m2.put("package","Sign=WXPay");
-		  m2.put("noncestr", createNonceStr());
-		  m2.put("timestamp", Long.toString(System.currentTimeMillis() / 1000));
-		  return m2;
 	  }
 	  /**
 	   * 获取公众号支付签名
@@ -212,24 +175,24 @@ public class UnifiedOrderUtil {
 	   * @throws Exception
 	   * 大小写敏感
 	   */
-	  public  String getPaySign(Map<String,String> map) throws Exception {
+	  public static String getPaySign(Map<String,String> map) throws Exception {
 		  String signTemp = "appId="+map.get("appid")
-		  +"&nonceStr="+map.get("nonce_str")
-		  +"&package="+map.get("package_value")
-		  +"&signType="+map.get("sign_type")
-		  +"&timeStamp="+map.get("time_stamp")
-		  +"&key="+key; //这个key注意
+				  +"&nonceStr="+map.get("nonce_str")
+				  +"&package="+map.get("package_value")
+				  +"&signType="+map.get("sign_type")
+				  +"&timeStamp="+map.get("time_stamp")
+		  		  +"&key="+key; //这个key注意
 		  MessageDigest md = MessageDigest.getInstance("MD5");
 		  md.reset();
 		  md.update(signTemp.getBytes("UTF-8"));
-		  String sign = byteToStr(md.digest()).toUpperCase();
+		  String sign = UnifiedOrderUtil2.byteToStr(md.digest()).toUpperCase();
 		  return sign;
 	  }
 	  /**
-	   * 获取微信公众号支付签名map
+	   * 获取微信支付签名map
 	   * @return
 	   */
-	  public  Map<String ,String> getPaySignMap(String prepay_id){
+	  public static Map<String ,String> getPaySignMap(String prepay_id){
 		  Map<String,String> m2=new HashMap<String,String>();
 		  m2.put("appid", appid);
 		 // m2.put("nonce_str", nonce_str);
@@ -247,7 +210,7 @@ public class UnifiedOrderUtil {
 		 * @return
 	 * @throws Exception 
 		 */
-		 public  UnifiedOrder queryOrder(String order_id) throws Exception {
+		 public static UnifiedOrder queryOrder(String order_id) throws Exception {
 			  UnifiedOrder unifiedOrder = new UnifiedOrder();
 			  unifiedOrder.setAppid(appid);
 			  unifiedOrder.setMchId(mch_id);
@@ -265,7 +228,7 @@ public class UnifiedOrderUtil {
 		   * @throws Exception
 		   * 大小写敏感
 		   */
-		  public  String getQueryOrderSign(String order_id,String nonce_str) throws Exception {
+		  public static String getQueryOrderSign(String order_id,String nonce_str) throws Exception {
 			  String signTemp = "appid="+appid
 					  +"&mch_id="+mch_id
 					  +"&nonce_str="+nonce_str
@@ -275,7 +238,7 @@ public class UnifiedOrderUtil {
 			  MessageDigest md = MessageDigest.getInstance("MD5");
 			  md.reset();
 			  md.update(signTemp.getBytes("UTF-8"));
-			  String sign = byteToStr(md.digest()).toUpperCase();
+			  String sign = UnifiedOrderUtil2.byteToStr(md.digest()).toUpperCase();
 			  return sign;
 		  }
 		  /**
@@ -283,7 +246,7 @@ public class UnifiedOrderUtil {
 			 * @return
 		 * @throws Exception 
 			 */
-			 public  UnifiedOrder closeOrder(String order_id) throws Exception {
+			 public static UnifiedOrder closeOrder(String order_id) throws Exception {
 				  UnifiedOrder unifiedOrder = new UnifiedOrder();
 				  unifiedOrder.setAppid(appid);
 				  unifiedOrder.setMchId(mch_id);
@@ -301,7 +264,7 @@ public class UnifiedOrderUtil {
 			   * @throws Exception
 			   * 大小写敏感
 			   */
-			  public  String getCloseOrderSign(String order_id,String nonce_str) throws Exception {
+			  public static String getCloseOrderSign(String order_id,String nonce_str) throws Exception {
 				  String signTemp = "appid="+appid
 						  +"&mch_id="+mch_id
 						  +"&nonce_str="+nonce_str
@@ -311,7 +274,7 @@ public class UnifiedOrderUtil {
 				  MessageDigest md = MessageDigest.getInstance("MD5");
 				  md.reset();
 				  md.update(signTemp.getBytes("UTF-8"));
-				  String sign =byteToStr(md.digest()).toUpperCase();
+				  String sign = UnifiedOrderUtil2.byteToStr(md.digest()).toUpperCase();
 				  return sign;
 			  }
 			  /**
@@ -319,7 +282,7 @@ public class UnifiedOrderUtil {
 				 * @return
 			 * @throws Exception 
 				 */
-				 public  UnifiedOrder refund(String order_id,Integer total_fee,Integer refund_fee) throws Exception {
+				 public static UnifiedOrder refund(String order_id,Integer total_fee,Integer refund_fee) throws Exception {
 					  UnifiedOrder unifiedOrder = new UnifiedOrder();
 					  unifiedOrder.setAppid(appid);
 					  unifiedOrder.setMchId(mch_id);
@@ -339,7 +302,7 @@ public class UnifiedOrderUtil {
 				   * @throws Exception
 				   * 大小写敏感
 				   */
-				  public  String getRefundSign(String order_id,String nonce_str,Integer total_fee,Integer refund_fee) throws Exception {
+				  public static String getRefundSign(String order_id,String nonce_str,Integer total_fee,Integer refund_fee) throws Exception {
 					  String signTemp = "appid="+appid
 							  +"&mch_id="+mch_id
 							  +"&nonce_str="+nonce_str
@@ -352,7 +315,7 @@ public class UnifiedOrderUtil {
 					  MessageDigest md = MessageDigest.getInstance("MD5");
 					  md.reset();
 					  md.update(signTemp.getBytes("UTF-8"));
-					  String sign = byteToStr(md.digest()).toUpperCase();
+					  String sign = UnifiedOrderUtil2.byteToStr(md.digest()).toUpperCase();
 					  return sign;
 				  }
 	  /**
@@ -361,7 +324,7 @@ public class UnifiedOrderUtil {
 	  * @param byteArray
 	  * @return
 	  */
-	  public  String byteToStr(byte[] byteArray) {
+	  public static String byteToStr(byte[] byteArray) {
 	   String strDigest = "";
 	   for (int i = 0; i < byteArray.length; i++) {
 	   strDigest += byteToHexStr(byteArray[i]);
@@ -374,7 +337,7 @@ public class UnifiedOrderUtil {
 	  * @param btyes
 	  * @return
 	  */
-	  public  String byteToHexStr(byte bytes) {
+	  public static String byteToHexStr(byte bytes) {
 	   char[] Digit = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 	   char[] tempArr = new char[2];
 	   tempArr[0] = Digit[(bytes >>> 4) & 0X0F];
@@ -387,7 +350,7 @@ public class UnifiedOrderUtil {
 	  * @param request
 	  * @return
 	  */
-	  public  String getIpAddr(HttpServletRequest request) { 
+	  public static String getIpAddr(HttpServletRequest request) { 
 	   InetAddress addr = null; 
 	   try { 
 	   addr = InetAddress.getLocalHost(); 

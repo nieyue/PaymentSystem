@@ -28,12 +28,12 @@ import com.nieyue.util.HttpClientUtil;
 import net.sf.json.JSONObject;
 
 /**
- * 阿里云支付
+ * 微信支付工具
  * @author 聂跃
  * @date 2017年9月12日
  */
 @Configuration
-public class AlipayUtil {
+public class WechatpayUtil {
 	@Value("${myPugin.alibaba.alipay.APP_ID}")
 	 String APP_ID;
 	 @Value("${myPugin.alibaba.alipay.APP_PRIVATE_KEY}")
@@ -168,18 +168,8 @@ public class AlipayUtil {
 					 payment.setStatus(2);//成功
 					 paymentService.updatePayment(payment);
 					// HttpClientUtil.doGet(bookStoreDomainUrl+"/bookOrder/paymentNotifyUrl?auth="+MyDESutil.getMD5("1000")+"&params="+URLEncoder.encode(payment.getBusinessNotifyUrl(),"UTF-8"));//异步回调
-					String businessNotifyUrl=payment.getBusinessNotifyUrl();
-					String fenge="&params=";//分割值
-					int fengelength=fenge.length();//分割长度
-					int num=businessNotifyUrl.indexOf(fenge);//分割位置
-					String prefix = businessNotifyUrl.substring(0,num);//分割之前
-					String pas = businessNotifyUrl.substring(num+fengelength);//分割之后
-					
-					String enpas = URLEncoder.encode(pas,"UTF-8");
-					String newBusinessNotifyUrl=prefix+fenge+enpas;
-					 String result = HttpClientUtil.doGet(newBusinessNotifyUrl);//异步回调
-					 if(JSONObject.fromObject(result).get("code").equals(200)
-							 ||JSONObject.fromObject(result).get("code").equals("200")){
+					 String result = HttpClientUtil.doGet(URLEncoder.encode(payment.getBusinessNotifyUrl(),"UTF-8"));//异步回调
+					 if(JSONObject.fromObject(result).get("code").equals("200")){
 						 return "success";
 					 }
 					 }else{
@@ -195,27 +185,8 @@ public class AlipayUtil {
 	 }
 	 public static void main(String[] args) throws AlipayApiException {
 		// new AlipayUtil().getPayment("1");//支付数据
-		//String oo = new AlipayUtil().getAlipayTradeQuery("86682017091817594310004");
-		//System.out.println(oo);
-		 /*String url="http://www.baidu.com?a=";
-		 StringBuffer sb=new StringBuffer();
-		 sb.append(url);
-		 for (int i = 0; i < 1000; i++) {
-			 sb.append(i);
-		}
-		 url=sb.toString();
-		 System.err.println(url);
-		 System.err.println(url.length());
-		try {
-			String n = HttpClientUtil.doGet(url);
-			System.err.println(n);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.err.println(e);
-		}*/
-		 String result="{\"code\":200}";
-		 System.out.println( JSONObject.fromObject(result).get("code").equals(200));
+		String oo = new WechatpayUtil().getAlipayTradeQuery("86682017091817594310004");
+		System.out.println(oo);
 	}
 	 
 }
