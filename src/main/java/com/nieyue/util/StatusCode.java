@@ -32,7 +32,8 @@ public class StatusCode {
 		return value;
 	}
 	public static void main(String[] args) {
-		System.out.println(StatusCode.GetValueByKey("USER_EXIST"));
+		System.out.println(2323);
+		//System.out.println(StatusCode.GetValueByKey("USER_EXIST"));
 		//System.out.println(SUCCESS);
 	}
 	/**

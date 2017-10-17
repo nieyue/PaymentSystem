@@ -1,9 +1,12 @@
 package com.nieyue.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -325,7 +328,19 @@ public class DateUtil {
        nmap.put("sign_type","d2323234ffds");
        nmap.put("body","第三方第三方");
        System.err.println(nmap.toString());
+      // File file =new File("E:/雅耀/2017/ios.txt");
+       String path="E:/雅耀/2017/ios.txt";
+      String er;
+	try {
+		er = new  MyFile().readFile(path);
+		System.out.println(er);
+		byte[] s = Base64.getEncoder().encode(er.getBytes("UTF-8"));
+		System.out.println(new String(s));
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
        
-        
+       //System.out.println(Base64.getEncoder().en);
     }  
 }

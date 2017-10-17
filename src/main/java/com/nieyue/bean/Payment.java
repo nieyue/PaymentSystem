@@ -43,7 +43,7 @@ public class Payment implements Serializable{
 	 */
 	private Double money;
 	/**
-	 *状态，1已下单，2成功，3失败
+	 *状态，1已下单，2成功，3失败,4异常
 	 */
 	private Integer status;
 	/**

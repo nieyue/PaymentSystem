@@ -66,10 +66,11 @@ public class SessionControllerInterceptor implements HandlerInterceptor {
         		||request.getRequestURI().indexOf("tool")>-1
         		||request.getRequestURI().indexOf("swagger")>-1 
         		||request.getRequestURI().indexOf("api-docs")>-1
+        		||request.getRequestURI().indexOf("appStorePay")>-1
         		//||request.getRequestURI().indexOf("wechat")>-1
         		//payment
         		||request.getRequestURI().indexOf("payment/count")>-1
-        		||request.getRequestURI().indexOf("payment/alipayNotifyUrl")>-1
+        		||request.getRequestURI().indexOf("NotifyUrl")>-1
        
         		){
         	return true;

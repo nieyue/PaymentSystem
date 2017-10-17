@@ -12,8 +12,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;

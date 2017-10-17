@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nieyue.bean.Payment;
 import com.nieyue.util.MyDom4jUtil;
 import com.nieyue.weixin.UnifiedOrderUtil;
-import com.nieyue.weixin.business.Order;
 import com.nieyue.weixin.business.WeiXinBusiness;
 
 import net.sf.json.JSONObject;
@@ -43,10 +43,15 @@ public class WechatController {
 	@RequestMapping(value="/payApp",method={RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody String WeiXinAppUnifiedOrder(
 			HttpServletRequest request) throws Exception {
-		Order o=new Order();
-		o.setOrderId(234);
+		Payment payment=new Payment();
+		payment.setBody("测试");
+		payment.setBusinessNotifyUrl("http://www.baidu.com");
+		payment.setMoney(0.01);
+		payment.setNotifyUrl("http://www.baidu.com");
+		payment.setOrderNumber("100");
+		payment.setType(2);
 		String openid =null;//
-		String result = weiXinBusiness.WXUnifiedorder(o,"测试", unifiedOrderUtil.getIpAddr(request), openid,"APP","http://nieyue.tea18.cn/weixin/notifyUrl");
+		String result = weiXinBusiness.WXUnifiedorder(payment, unifiedOrderUtil.getIpAddr(request), openid,"APP");
 		Map<String, Object> m = MyDom4jUtil.xmlStrToMap(result);
 		String prepay_id = (String) m.get("prepay_id");
 		Map<String,String> map=unifiedOrderUtil.getAPPPaySignMap(prepay_id);
@@ -66,10 +71,15 @@ public class WechatController {
 	 */
 	@RequestMapping(value="/paywap/{orderId}",method={RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody String WeiXinCommentUnifiedOrder(@PathVariable("orderId")String orderId,HttpServletRequest request) throws Exception {
-		Order o=new Order();
-		o.setOrderId(234);
+		Payment payment=new Payment();
+		payment.setBody("测试");
+		payment.setBusinessNotifyUrl("http://www.baidu.com");
+		payment.setMoney(0.01);
+		payment.setNotifyUrl("http://www.baidu.com");
+		payment.setOrderNumber("100");
+		payment.setType(2);
 		String openid =null;//
-		String result = weiXinBusiness.WXUnifiedorder(o,"测试", unifiedOrderUtil.getIpAddr(request), openid,"NATIVE","http://nieyue.tea18.cn/weixin/notifyUrl");
+		String result = weiXinBusiness.WXUnifiedorder(payment, unifiedOrderUtil.getIpAddr(request), openid,"NATIVE");
 		Map<String, Object> m = MyDom4jUtil.xmlStrToMap(result);
 		String prepay_id = (String) m.get("prepay_id");
 		Map<String,String> map=unifiedOrderUtil.getPaySignMap(prepay_id);
@@ -91,12 +101,17 @@ public class WechatController {
 	 */
 	@RequestMapping(value="/test/{orderId}",method={RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody String WeiXiPayWap(@PathVariable("orderId")String orderId,HttpServletRequest request) throws Exception {
-		Order o=new Order();
-		o.setOrderId(234);
+		Payment payment=new Payment();
+		payment.setBody("测试");
+		payment.setBusinessNotifyUrl("http://www.baidu.com");
+		payment.setMoney(0.01);
+		payment.setNotifyUrl("http://www.baidu.com");
+		payment.setOrderNumber("100");
+		payment.setType(2);
 		//String openid = (String)request.getSession().getAttribute("openid");
 		//String openid = "orFtEwbV4pZCgYpU09JrfZavbAjE";//放肆约
 		String openid = "oDvosuIH0Lmn9eDN1nTTTQGVww74";//雅耀本真
-		String result = weiXinBusiness.WXUnifiedorder(o,"测试", unifiedOrderUtil.getIpAddr(request), openid,"JSAPI","http://nieyue.tea18.cn/weixin/notifyUrl");
+		String result = weiXinBusiness.WXUnifiedorder(payment, unifiedOrderUtil.getIpAddr(request), openid,"JSAPI");
 		System.out.println(result);
 		Map<String, Object> m = MyDom4jUtil.xmlStrToMap(result);
 		String prepay_id = (String) m.get("prepay_id");

@@ -1,4 +1,4 @@
-package com.nieyue.alipay;
+package com.nieyue.pay;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -153,6 +153,10 @@ public class AlipayUtil {
 //					 String total_amount = (String) request.getParameter("total_amount");
 					 //String paymentId = "5";
 					 payment = paymentService.loadPayment(Integer.valueOf(paymentId));
+					 //已经处理过了
+					 if(payment.getStatus()!=1){
+						 return "success";
+					 }
 					 if(!out_trade_no.equals(payment.getOrderNumber())
 							 ||!total_amount.equals(payment.getMoney().toString())){
 						 signVerified=false;
@@ -164,9 +168,6 @@ public class AlipayUtil {
 					// String businessNotifyUrl = URLDecoder.decode( paramsMap.get("passback_params"), "UTF-8");
 			       //bookStoreDomainUrl+"/bookOrder/paymentNotifyUrl?auth="+MyDESutil.getMD5("1000")+"&params=\""
 					// HttpClientUtil.doGet(businessNotifyUrl);//异步回调
-					 //支付成功
-					 payment.setStatus(2);//成功
-					 paymentService.updatePayment(payment);
 					// HttpClientUtil.doGet(bookStoreDomainUrl+"/bookOrder/paymentNotifyUrl?auth="+MyDESutil.getMD5("1000")+"&params="+URLEncoder.encode(payment.getBusinessNotifyUrl(),"UTF-8"));//异步回调
 					String businessNotifyUrl=payment.getBusinessNotifyUrl();
 					String fenge="&params=";//分割值
@@ -180,6 +181,9 @@ public class AlipayUtil {
 					 String result = HttpClientUtil.doGet(newBusinessNotifyUrl);//异步回调
 					 if(JSONObject.fromObject(result).get("code").equals(200)
 							 ||JSONObject.fromObject(result).get("code").equals("200")){
+						 //支付成功
+						 payment.setStatus(2);//成功
+						 paymentService.updatePayment(payment);
 						 return "success";
 					 }
 					 }else{

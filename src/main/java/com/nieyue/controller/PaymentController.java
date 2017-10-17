@@ -1,12 +1,15 @@
 package com.nieyue.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -20,19 +23,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alipay.api.AlipayApiException;
-import com.nieyue.alipay.AlipayUtil;
 import com.nieyue.bean.Payment;
+import com.nieyue.ipa.IPABusiness;
+import com.nieyue.pay.AlipayUtil;
+import com.nieyue.pay.WechatpayUtil;
 import com.nieyue.rabbitmq.confirmcallback.Sender;
 import com.nieyue.service.PaymentService;
-import com.nieyue.util.MyDom4jUtil;
 import com.nieyue.util.ResultUtil;
 import com.nieyue.util.StateResult;
 import com.nieyue.util.StateResultList;
 import com.nieyue.weixin.UnifiedOrderUtil;
-import com.nieyue.weixin.business.Order;
 import com.nieyue.weixin.business.WeiXinBusiness;
-
-import net.sf.json.JSONObject;
 
 
 /**
@@ -50,7 +51,11 @@ public class PaymentController {
 	@Resource
 	private AlipayUtil alipayUtil;
 	@Resource
+	private WechatpayUtil wechatpayUtil;
+	@Resource
 	private WeiXinBusiness weiXinBusiness;
+	@Resource
+	private IPABusiness iPABusiness;
 	@Resource
 	private UnifiedOrderUtil unifiedOrderUtil;
 	
@@ -80,6 +85,71 @@ public class PaymentController {
 			}else{
 				return ResultUtil.getSlefSRFailList(list);
 			}
+	}
+	/**
+	 * appStorePay
+	 * @return
+	 * @throws IOException 
+	 */
+	@RequestMapping(value = "/appStorePay", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody StateResultList appStorePay(
+			//@RequestBody String body,
+			HttpServletRequest request,
+			HttpSession session) throws IOException  {
+			List list=new ArrayList();
+//			
+	 	String surl="https://sandbox.itunes.apple.com/verifyReceipt";
+		String url="https://buy.itunes.apple.com/verifyReceipt";
+//		System.err.println("--------------------------------------");
+//		ServletInputStream ris =  request.getInputStream();
+//		    StringBuilder content = new StringBuilder();  
+//		    byte[] b = new byte[64];  
+//		    int lens = -1;  
+//		    while ((lens = ris.read(b)) > 0) {  
+//		        content.append(new String(b, 0, lens));  
+//		    }  
+//		    String strcont = content.toString();// 内容
+//		strcont=java.util.Base64.getEncoder().encodeToString(strcont.getBytes());
+//		System.err.println(strcont);
+//			String result; 
+//			try {
+//				result = HttpClientUtil.doPostString(surl,"{\"receipt-data\":"+strcont+"}");
+//				list.add(result);
+//				System.err.println(result);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			ServletInputStream ris =  request.getInputStream();
+			System.err.println(232);
+			 InputStreamReader isr=new InputStreamReader(ris);
+             BufferedReader br=new BufferedReader(isr);
+             StringBuffer sb=new StringBuffer();
+             String rl=null;
+             while((rl=br.readLine())!=null){
+                 sb.append(rl);    
+                 //buf=new byte[1024];//重新生成，避免和上次读取的数据重复
+             }
+             br.close();
+             isr.close();
+             ris.close();
+		    String strcont = sb.toString();// 内容
+		    strcont=java.util.Base64.getEncoder().encodeToString(strcont.getBytes());
+		    System.err.println(strcont);
+			String s = iPABusiness.setIapCertificate("1000", strcont, false);
+			System.err.println(s);
+			list.add(s);
+		/*String result="";
+		System.err.println(body);
+			try {
+				 result = HttpClientUtil.doPostString(surl,body);
+				list.add(result);
+				System.err.println(result);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		return ResultUtil.getSlefSRSuccessList(list);
 	}
 	/**
 	 * 支付修改
@@ -122,18 +192,9 @@ public class PaymentController {
 	public @ResponseBody String WeiXinAppUnifiedOrder(
 			@ModelAttribute Payment payment,
 			HttpServletRequest request) throws Exception {
+		String b=wechatpayUtil.getPayment(payment,request);
+		return b;
 		
-		Order o=new Order();
-		o.setOrderId(234);
-		String openid =null;//
-		String result = weiXinBusiness.WXUnifiedorder(o,"测试", unifiedOrderUtil.getIpAddr(request), openid,"APP","http://nieyue.tea18.cn/weixin/notifyUrl");
-		Map<String, Object> m = MyDom4jUtil.xmlStrToMap(result);
-		String prepay_id = (String) m.get("prepay_id");
-		Map<String,String> map=unifiedOrderUtil.getAPPPaySignMap(prepay_id);
-		String sign = unifiedOrderUtil.getAPPPaySign(map);
-		map.put("sign", sign);
-		JSONObject json = JSONObject.fromObject(map);
-		return json.toString();
 	}
 /*	*//**
 	 * 阿里云支付
@@ -189,6 +250,16 @@ public class PaymentController {
 	@RequestMapping(value = "/alipayNotifyUrl", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody String alipayNotifyUrl(HttpServletRequest request,HttpSession session) {
 		 String pm = alipayUtil.getNotifyUrl(request);
+		return pm;
+	}
+	/**
+	 * 阿里云支付回调
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/wechatpayNotifyUrl", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String wechatpayNotifyUrl(HttpServletRequest request,HttpSession session) {
+		String pm = wechatpayUtil.getNotifyUrl(request);
 		return pm;
 	}
 	/**

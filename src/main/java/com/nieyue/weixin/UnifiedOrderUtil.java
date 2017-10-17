@@ -9,7 +9,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.rmi.ConnectException;
 import java.security.MessageDigest;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -17,13 +16,12 @@ import java.util.UUID;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+import com.nieyue.bean.Payment;
 import com.nieyue.util.MyDom4jUtil;
 import com.nieyue.weixin.bean.UnifiedOrder;
-import com.nieyue.weixin.business.Order;
 
 import net.sf.json.JSONObject;
 
@@ -118,19 +116,19 @@ public class UnifiedOrderUtil {
 	 * @param openId 用户的openId
 	 * @return
 	 */
-	 public  UnifiedOrder createUnifiedOrder(Order order,String body,String ip,String openid,String trade_type,String notify_url) {
+	 public  UnifiedOrder createUnifiedOrder(Payment payment,String ip,String openid,String trade_type) {
 		  UnifiedOrder unifiedOrder = new UnifiedOrder();
 		  unifiedOrder.setAppid(appid);
 		  unifiedOrder.setDeviceInfo("WEB");
 		  unifiedOrder.setMchId(mch_id);
 		  unifiedOrder.setNonceStr(createNonceStr());
-		  unifiedOrder.setBody(body);
-		  unifiedOrder.setAttach(order.getOrderId().toString());
-		  unifiedOrder.setOutTradeNo(String.valueOf((int)(Math.random()*9000+1000)).concat(DateFormatUtils.format(new Date(), "MMddHHmmss")));
-		  unifiedOrder.setTotalFee(order.getFeeAmount());
+		  unifiedOrder.setBody(payment.getBody());
+		  unifiedOrder.setAttach(payment.getPaymentId().toString());
+		  unifiedOrder.setOutTradeNo(payment.getOrderNumber());
+		  unifiedOrder.setTotalFee( Integer.valueOf((int) (payment.getMoney()*100)));
 		  unifiedOrder.setSpbillCreateIp(ip);
 		 // unifiedOrder.setNotifyUrl("http://nieyue.tea18.cn/weixin/notifyUrl");
-		  unifiedOrder.setNotifyUrl(notify_url);
+		  unifiedOrder.setNotifyUrl(payment.getNotifyUrl());
 		  unifiedOrder.setTradeType(trade_type);
 		  if(openid!=null&&!openid.equals("") ){
 			  unifiedOrder.setOpenid(openid);

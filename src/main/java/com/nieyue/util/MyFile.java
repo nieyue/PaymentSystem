@@ -145,8 +145,9 @@ public class MyFile implements Runnable {
              InputStreamReader isr=new InputStreamReader(fis);
              BufferedReader br=new BufferedReader(isr);
              StringBuffer sb=new StringBuffer();
-             while((br.readLine())!=null){
-                 sb.append(br.readLine());    
+             String rl=null;
+             while((rl=br.readLine())!=null){
+                 sb.append(rl);    
                  //buf=new byte[1024];//重新生成，避免和上次读取的数据重复
              }
              br.close();

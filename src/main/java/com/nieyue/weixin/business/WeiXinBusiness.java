@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
+import com.nieyue.bean.Payment;
 import com.nieyue.util.HttpClientUtil;
 import com.nieyue.util.MyConvertXML;
 import com.nieyue.util.MyDom4jUtil;
@@ -86,8 +87,8 @@ public class WeiXinBusiness {
 	 * @return prepay_id ，code_url（trade_type为NATIVE有返回）
 	 * @throws Exception 
 	 */
-	public  String WXUnifiedorder(Order order,String body,String ip,String openid,String trade_type,String notify_url) throws Exception {
-		UnifiedOrder uo = unifiedOrderUtil.createUnifiedOrder(order,body,ip,openid,trade_type,notify_url);//创建微信订单
+	public  String WXUnifiedorder(Payment payment,String ip,String openid,String trade_type) throws Exception {
+		UnifiedOrder uo = unifiedOrderUtil.createUnifiedOrder(payment,ip,openid,trade_type);//创建微信订单
 		String sign = unifiedOrderUtil.getSign(uo);
 		uo.setSign(sign);//设置签名
 		String xxml = MyConvertXML.getUnderlineXML(uo,true);//对象转xml 驼峰转下划线
