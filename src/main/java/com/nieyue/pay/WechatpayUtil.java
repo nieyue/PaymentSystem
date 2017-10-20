@@ -40,8 +40,14 @@ public class WechatpayUtil {
 	 @Resource
 	 UnifiedOrderUtil unifiedOrderUtil;
 	 
-	 
-	 public String getPayment(Payment payment,HttpServletRequest request) throws Exception{
+	 /**
+	  * 微信app支付
+	  * @param payment
+	  * @param request
+	  * @return
+	  * @throws Exception
+	  */
+	 public String getAppPayment(Payment payment,HttpServletRequest request) throws Exception{
 		
 		 //存储payment
 		boolean b = paymentService.addPayment(payment);

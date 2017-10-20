@@ -55,6 +55,7 @@ public class PaymentServiceImpl implements PaymentService{
 
 	@Override
 	public int countAll(
+			String orderNumber,
 			Integer type,
 			Integer businessId,
 			Integer acountId,
@@ -62,6 +63,7 @@ public class PaymentServiceImpl implements PaymentService{
 			Date updateDate,
 			Integer status) {
 		int c = paymentDao.countAll(
+				 orderNumber,
 				 type,
 				 businessId,
 				 acountId,
@@ -73,6 +75,7 @@ public class PaymentServiceImpl implements PaymentService{
 
 	@Override
 	public List<Payment> browsePagingPayment(
+			String orderNumber,
 			Integer type,
 			Integer businessId,
 			Integer acountId,
@@ -88,6 +91,7 @@ public class PaymentServiceImpl implements PaymentService{
 			pageSize=0;//没有数据
 		}
 		List<Payment> l = paymentDao.browsePagingPayment(
+				 orderNumber,
 				 type,
 				 businessId,
 				 acountId,

@@ -25,6 +25,7 @@ public interface PaymentDao {
 	public Payment loadPayment(Integer paymentId);	
 	/** 支付总共数目 */	
 	public int countAll(
+			@Param("orderNumber")String orderNumber,
 			@Param("type")Integer type,
 			@Param("businessId")Integer businessId,
 			@Param("acountId")Integer acountId,
@@ -34,6 +35,7 @@ public interface PaymentDao {
 			);	
 	/** 分页支付信息 */
 	public List<Payment> browsePagingPayment(
+			@Param("orderNumber")String orderNumber,
 			@Param("type")Integer type,
 			@Param("businessId")Integer businessId,
 			@Param("acountId")Integer acountId,

@@ -130,6 +130,9 @@ WHERE payment_id=#{paymentId}
    		 update_date
 	FROM payment_tb
 	<where>
+	<if test="orderNumber!=null">
+	AND order_number=#{orderNumber}
+	</if>
 	<if test="type!=null">
 	AND type=#{type}
 	</if>
@@ -157,6 +160,9 @@ WHERE payment_id=#{paymentId}
 	</if>
 	(SELECT ${orderName} FROM payment_tb 
 	<where>
+	<if test="orderNumber!=null">
+	AND order_number=#{orderNumber}
+	</if>
 		<if test="type!=null">
 	AND type=#{type}
 	</if>
@@ -193,6 +199,9 @@ WHERE payment_id=#{paymentId}
 	 	count(payment_id)
 	FROM payment_tb
 	<where>
+	<if test="orderNumber!=null">
+	AND order_number=#{orderNumber}
+	</if>
 		<if test="type!=null">
 	AND type>=#{type}
 	</if>

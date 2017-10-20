@@ -1,15 +1,12 @@
 package com.nieyue.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -26,14 +23,18 @@ import com.alipay.api.AlipayApiException;
 import com.nieyue.bean.Payment;
 import com.nieyue.ipa.IPABusiness;
 import com.nieyue.pay.AlipayUtil;
+import com.nieyue.pay.IospayUtil;
 import com.nieyue.pay.WechatpayUtil;
 import com.nieyue.rabbitmq.confirmcallback.Sender;
 import com.nieyue.service.PaymentService;
+import com.nieyue.util.HttpClientUtil;
 import com.nieyue.util.ResultUtil;
 import com.nieyue.util.StateResult;
 import com.nieyue.util.StateResultList;
 import com.nieyue.weixin.UnifiedOrderUtil;
 import com.nieyue.weixin.business.WeiXinBusiness;
+
+import net.sf.json.JSONObject;
 
 
 /**
@@ -58,6 +59,8 @@ public class PaymentController {
 	private IPABusiness iPABusiness;
 	@Resource
 	private UnifiedOrderUtil unifiedOrderUtil;
+	@Resource
+	private IospayUtil iospayUtil;
 	
 	
 	/**
@@ -68,6 +71,7 @@ public class PaymentController {
 	 */
 	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResultList browsePagingPayment(
+			@RequestParam(value="orderNumber",required=false)String orderNumber,
 			@RequestParam(value="type",required=false)Integer type,
 			@RequestParam(value="businessId",required=false)Integer businessId,
 			@RequestParam(value="acountId",required=false)Integer acountId,
@@ -79,7 +83,7 @@ public class PaymentController {
 			@RequestParam(value="orderName",required=false,defaultValue="payment_id") String orderName,
 			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay)  {
 			List<Payment> list = new ArrayList<Payment>();
-			list= paymentService.browsePagingPayment(type,businessId,acountId,createDate,updateDate,status,pageNum, pageSize, orderName, orderWay);
+			list= paymentService.browsePagingPayment(orderNumber,type,businessId,acountId,createDate,updateDate,status,pageNum, pageSize, orderName, orderWay);
 			if(list.size()>0){
 				return ResultUtil.getSlefSRSuccessList(list);
 			}else{
@@ -87,68 +91,41 @@ public class PaymentController {
 			}
 	}
 	/**
-	 * appStorePay
+	 * appstorepay
+	 * {acountId:1000,bookOrderDetailList:[{billingMode:1,payType:1,type:1}]}
 	 * @return
 	 * @throws IOException 
 	 */
-	@RequestMapping(value = "/appStorePay", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/appstorepay", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResultList appStorePay(
-			//@RequestBody String body,
-			HttpServletRequest request,
+			@RequestBody String appstorepay,
 			HttpSession session) throws IOException  {
-			List list=new ArrayList();
-//			
+		JSONObject jsonobject=JSONObject.fromObject(appstorepay);
+		String body = jsonobject.getString("body");
+		System.err.println(body.length());
+		Object bookOrder = jsonobject.get("bookOrder");
+		//bookOrder 
+		System.err.println(bookOrder);
+		//body=body.replace(" ","\n");
+		//body		
+		//String body=map.get("body");
+		List list=new ArrayList(); 
 	 	String surl="https://sandbox.itunes.apple.com/verifyReceipt";
 		String url="https://buy.itunes.apple.com/verifyReceipt";
-//		System.err.println("--------------------------------------");
-//		ServletInputStream ris =  request.getInputStream();
-//		    StringBuilder content = new StringBuilder();  
-//		    byte[] b = new byte[64];  
-//		    int lens = -1;  
-//		    while ((lens = ris.read(b)) > 0) {  
-//		        content.append(new String(b, 0, lens));  
-//		    }  
-//		    String strcont = content.toString();// 内容
-//		strcont=java.util.Base64.getEncoder().encodeToString(strcont.getBytes());
-//		System.err.println(strcont);
-//			String result; 
-//			try {
-//				result = HttpClientUtil.doPostString(surl,"{\"receipt-data\":"+strcont+"}");
-//				list.add(result);
-//				System.err.println(result);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			ServletInputStream ris =  request.getInputStream();
-			System.err.println(232);
-			 InputStreamReader isr=new InputStreamReader(ris);
-             BufferedReader br=new BufferedReader(isr);
-             StringBuffer sb=new StringBuffer();
-             String rl=null;
-             while((rl=br.readLine())!=null){
-                 sb.append(rl);    
-                 //buf=new byte[1024];//重新生成，避免和上次读取的数据重复
-             }
-             br.close();
-             isr.close();
-             ris.close();
-		    String strcont = sb.toString();// 内容
-		    strcont=java.util.Base64.getEncoder().encodeToString(strcont.getBytes());
-		    System.err.println(strcont);
-			String s = iPABusiness.setIapCertificate("1000", strcont, false);
-			System.err.println(s);
-			list.add(s);
-		/*String result="";
-		System.err.println(body);
+		
+			String result; 
 			try {
-				 result = HttpClientUtil.doPostString(surl,body);
+				result = HttpClientUtil.doPostString(url,"{\"receipt-data\":\""+body+"\"}");
+				JSONObject rejson = JSONObject.fromObject(result);
+				if(rejson.get("status").equals("21007")
+						||rejson.get("status").equals(21007)){//沙盒
+					result = HttpClientUtil.doPostString(surl,"{\"receipt-data\":\""+body+"\"}");
+				}
 				list.add(result);
-				System.err.println(result);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}*/
+			}
 		return ResultUtil.getSlefSRSuccessList(list);
 	}
 	/**
@@ -156,7 +133,7 @@ public class PaymentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/update", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResult updatePayment(@RequestBody Payment payment,HttpSession session)  {
+	public @ResponseBody StateResult updatePayment(@ModelAttribute Payment payment,HttpSession session)  {
 		boolean um = paymentService.updatePayment(payment);
 		return ResultUtil.getSR(um);
 	}
@@ -170,7 +147,7 @@ public class PaymentController {
 	public @ResponseBody String alipay(
 			@ModelAttribute Payment payment,
 			HttpSession session) throws UnsupportedEncodingException  {
-		String b = alipayUtil.getPayment(payment);
+		String b = alipayUtil.getAppPayment(payment);
 		return b;
 		/*List<String> ls=new ArrayList<String>();
 		if(!b.equals("")&&b!=null){
@@ -189,11 +166,24 @@ public class PaymentController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value="/wechatpay",method={RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody String WeiXinAppUnifiedOrder(
+	public @ResponseBody String wechatpay(
 			@ModelAttribute Payment payment,
 			HttpServletRequest request) throws Exception {
-		String b=wechatpayUtil.getPayment(payment,request);
+		String b=wechatpayUtil.getAppPayment(payment,request);
 		return b;
+		
+	}
+	/**
+	 * iosapp支付支付 
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/iospay",method={RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String iospay(
+			@ModelAttribute Payment payment,
+			HttpServletRequest request) throws Exception {
+		String p=iospayUtil.getAppPayment(payment);
+		return p;
 		
 	}
 /*	*//**
@@ -263,6 +253,16 @@ public class PaymentController {
 		return pm;
 	}
 	/**
+	 * iosapp支付回调
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/iospayNotifyUrl", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String iospayNotifyUrl(HttpServletRequest request,HttpSession session) {
+		String pm = iospayUtil.getNotifyUrl(request);
+		return pm;
+	}
+	/**
 	 * 支付增加
 	 * @return 
 	 */
@@ -286,6 +286,7 @@ public class PaymentController {
 	 */
 	@RequestMapping(value = "/count", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody int countAll(
+			@RequestParam(value="orderNumber",required=false)String orderNumber,
 			@RequestParam(value="type",required=false)Integer type,
 			@RequestParam(value="businessId",required=false)Integer businessId,
 			@RequestParam(value="acountId",required=false)Integer acountId,
@@ -293,7 +294,7 @@ public class PaymentController {
 			@RequestParam(value="updateDate",required=false)Date updateDate,
 			@RequestParam(value="status",required=false)Integer status,
 			HttpSession session)  {
-		int count = paymentService.countAll(type,businessId,acountId,createDate,updateDate,status);
+		int count = paymentService.countAll(orderNumber,type,businessId,acountId,createDate,updateDate,status);
 		return count;
 	}
 	/**

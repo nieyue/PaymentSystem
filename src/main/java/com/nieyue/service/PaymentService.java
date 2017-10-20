@@ -21,6 +21,7 @@ public interface PaymentService {
 	public Payment loadPayment(Integer paymentId);	
 	/** 支付总共数目 */	
 	public int countAll(
+			String orderNumber,
 			Integer type,
 			Integer businessId,
 			Integer acountId,
@@ -29,6 +30,7 @@ public interface PaymentService {
 			Integer status);
 	/** 分页支付信息 */
 	public List<Payment> browsePagingPayment(
+			String orderNumber,
 			Integer type,
 			Integer businessId,
 			Integer acountId,

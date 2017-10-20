@@ -46,7 +46,13 @@ public class AlipayUtil {
 	 String bookStoreDomainUrl;
 	 @Resource
 	 PaymentService paymentService;
-	 public String getPayment(Payment payment) throws UnsupportedEncodingException{
+	 /**
+	  * 支付宝app支付
+	  * @param payment
+	  * @return
+	  * @throws UnsupportedEncodingException
+	  */
+	 public String getAppPayment(Payment payment) throws UnsupportedEncodingException{
 		 //实例化客户端
 		 AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", APP_ID, APP_PRIVATE_KEY, "json", "UTF-8", ALIPAY_PUBLIC_KEY, "RSA2");
 		 //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
