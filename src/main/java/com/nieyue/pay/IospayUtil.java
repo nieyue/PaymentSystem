@@ -1,5 +1,7 @@
 package com.nieyue.pay;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,11 +52,19 @@ public class IospayUtil {
 	  * @return
 	  */
 	public String getNotifyUrl(HttpServletRequest request) {
-		String body=(String) request.getAttribute("body");
-	 	String surl="https://sandbox.itunes.apple.com/verifyReceipt";
+		String surl="https://sandbox.itunes.apple.com/verifyReceipt";
 		String url="https://buy.itunes.apple.com/verifyReceipt";
 		
-			String result; 
+		String result = "{\"code\":\"40000\",\"msg\":\"重复验证\"}"; 
+		String orderNumber=(String) request.getParameter("orderNumber");
+		String body=(String) request.getParameter("body");
+		//System.err.println(body.length());
+		//System.err.println(body);
+		//System.err.println(orderNumber);
+		List<Payment> paymentl = paymentService.browsePagingPayment(orderNumber, null, null, null, null, null, null, 1, Integer.MAX_VALUE, "payment_id", "asc");
+		if(
+				paymentl.size()==1 &&paymentl.get(0).getStatus()==1
+				){
 			try {
 				result = HttpClientUtil.doPostString(url,"{\"receipt-data\":\""+body+"\"}");
 				JSONObject rejson = JSONObject.fromObject(result);
@@ -66,6 +76,7 @@ public class IospayUtil {
 				// TODO Auto-generated catch block
 				return "{\"code\":\"40000\",\"msg\":\"异常\"}";
 			}
+		}
 		return result;
 	}
 

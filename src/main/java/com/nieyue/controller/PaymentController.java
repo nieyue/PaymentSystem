@@ -258,7 +258,10 @@ public class PaymentController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/iospayNotifyUrl", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody String iospayNotifyUrl(HttpServletRequest request,HttpSession session) {
+	public @ResponseBody String iospayNotifyUrl(
+			//@RequestBody String body,
+			HttpServletRequest request,
+			HttpSession session) {
 		String pm = iospayUtil.getNotifyUrl(request);
 		return pm;
 	}
