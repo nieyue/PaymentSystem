@@ -32,8 +32,8 @@ myPugin:
   projectName: PaymentSystem
   location: c://config/thirdParty.properties
   requestAuth: requestAuthDev
-  sevenSecondsDomainUrl: http://192.168.7.111
-  bookStoreDomainUrl: http://192.168.7.111:8082
+  sevenSecondsDomainUrl: http://192.168.11.111
+  bookStoreDomainUrl: http://192.168.11.111:8082
   alibaba:
     alipay:
       APP_ID: 2017081808253496 
